@@ -1,0 +1,178 @@
+%Parte 1
+%Letra a
+n = [0:8191];
+Fs = 8192;
+Omega_0 = 2*pi*1000;
+t = (0:1/Fs:10-1/Fs);
+x = sin(Omega_0*n*1/Fs);
+
+%Letra b
+subplot(211);
+stem(n(1,1:50), x(1,1:50));
+xlabel('Quantidade de amostras (n)');
+ylabel('Sinal discreto x[n]');
+
+subplot(212);
+plot(t(1,1:50), x(1,1:50));
+xlabel('Tempo (t)');
+ylabel('Sinal contínuo x(t)');
+
+%Letra c
+[X, omega] = ctfts(x, 1/Fs);
+plot(omega, abs(X));
+xlabel('Frequência \omega(rad)');
+ylabel('|X(e^{jω})|');
+
+%Parte 2
+%Letra d
+%Frequência 1500
+Omega_1 = 2*pi*1500;
+x_1 = sin(Omega_1*n*1/Fs);
+
+subplot(211);
+stem(n(1,1:50), x_1(1,1:50));
+xlabel('Quantidade de amostras (n)');
+ylabel('Sinal discreto x[n]');
+
+subplot(212);
+plot(t(1,1:50), x_1(1,1:50));
+xlabel('Tempo (t)');
+ylabel('Sinal contínuo x(t)');
+
+[X_1, omega_1] = ctfts(x_1, 1/Fs);
+plot(omega_1, abs(X_1));
+xlabel('Frequência \omega(rad)');
+ylabel('|X(e^{jω})|');
+
+%Frequência 2000
+Omega_2 = 2*pi*2000;
+x_2 = sin(Omega_2*n*1/Fs);
+
+subplot(211);
+stem(n(1,1:50), x_2(1,1:50));
+xlabel('Quantidade de amostras (n)');
+ylabel('Sinal discreto x[n]');
+
+subplot(212);
+plot(t(1,1:50), x_2(1,1:50));
+xlabel('Tempo (t)');
+ylabel('Sinal contínuo x(t)');
+
+[X_2, omega_2] = ctfts(x_2, 1/Fs);
+plot(omega_2, abs(X_2));
+xlabel('Frequência \omega(rad)');
+ylabel('|X(e^{jω})|');
+
+%Letra e
+sound(x_1, Fs);
+sound(x_2, Fs);
+
+%Letra f
+%Frequência 3500
+Omega_3 = 2*pi*3500;
+x_3 = sin(Omega_3*n*1/Fs);
+
+subplot(211);
+stem(n(1,1:50), x_3(1,1:50));
+xlabel('Quantidade de amostras (n)');
+ylabel('Sinal discreto x[n]');
+
+subplot(212);
+plot(t(1,1:50), x_3(1,1:50));
+xlabel('Tempo (t)');
+ylabel('Sinal contínuo x(t)');
+
+[X_3, omega_3] = ctfts(x_3, 1/Fs);
+plot(omega_3, abs(X_3));
+xlabel('Frequência \omega(rad)');
+ylabel('|X(e^{jω})|');
+
+sound(x_3);
+
+%Frequência 4000
+Omega_4 = 2*pi*4000;
+x_4 = sin(Omega_4*n*1/Fs);
+
+subplot(211);
+stem(n(1,1:50), x_4(1,1:50));
+xlabel('Quantidade de amostras (n)');
+ylabel('Sinal discreto x[n]');
+
+subplot(212);
+plot(t(1,1:50), x_4(1,1:50));
+xlabel('Tempo (t)');
+ylabel('Sinal contínuo x(t)');
+
+[X_4, omega_4] = ctfts(x_4, 1/Fs);
+plot(omega_4, abs(X_4));
+xlabel('Frequência \omega(rad)');
+ylabel('|X(e^{jω})|');
+
+sound(x_4);
+
+%Frequência 4500
+Omega_5 = 2*pi*4500;
+x_5 = sin(Omega_5*n*1/Fs);
+
+subplot(211);
+stem(n(1,1:50), x_5(1,1:50));
+xlabel('Quantidade de amostras (n)');
+ylabel('Sinal discreto x[n]');
+
+subplot(212);
+plot(t(1,1:50), x_5(1,1:50));
+xlabel('Tempo (t)');
+ylabel('Sinal contínuo x(t)');
+
+[X_5, omega_5] = ctfts(x_5, 1/Fs);
+plot(omega_5, abs(X_5));
+xlabel('Frequência \omega(rad)');
+ylabel('|X(e^{jω})|');
+
+sound(x_5);
+
+%Frequência 5000
+Omega_6 = 2*pi*5000;
+x_6 = sin(Omega_6*n*1/Fs);
+
+subplot(211);
+stem(n(1,1:50), x_6(1,1:50));
+xlabel('Quantidade de amostras (n)');
+ylabel('Sinal discreto x[n]');
+
+subplot(212);
+plot(t(1,1:50), x_6(1,1:50));
+xlabel('Tempo (t)');
+ylabel('Sinal contínuo x(t)');
+
+
+[X_6, omega_6] = ctfts(x_6, 1/Fs);
+plot(omega_6, abs(X_6));
+xlabel('Frequência \omega(rad)');
+ylabel('|X(e^{jω})|');
+
+sound(x_6);
+
+
+%Frequência 5500
+
+Omega_7 = 2*pi*5500;
+x_6 = sin(Omega_7*n*1/Fs);
+
+subplot(211);
+stem(n(1,1:50), x_7(1,1:50));
+xlabel('Quantidade de amostras (n)');
+ylabel('Sinal discreto x[n]');
+
+subplot(212);
+plot(t(1,1:50), x_7(1,1:50));
+xlabel('Tempo (t)');
+ylabel('Sinal contínuo x(t)');
+
+
+[X_7, omega_7] = ctfts(x_7, 1/Fs);
+plot(omega_7, abs(X_7));
+xlabel('Frequência \omega(rad)');
+ylabel('|X(e^{jω})|');
+
+sound(x_7);

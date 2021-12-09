@@ -1,0 +1,224 @@
+%Parte 1 do projeto Filtros IIR
+fc = 0.6;
+fa = 2;
+N = 5;
+
+%1. 1
+%filtro
+[b, a] = butter(N, 2*fc/fa);
+[H, W] = freqz(b, a, 2048);
+figure (1);
+semilogy(W,abs(H));
+grid;
+title('Mag');
+%fase
+figure (2);
+plot(W ,(180/ pi)*angle(H));
+grid;
+title("Fase");
+%Diagrama de z e r o s e p o l o s
+figure (3);
+zplane(b,a);
+grid;
+title("DPZ");
+%impresp
+figure (4);
+impz(b,a ,50);
+grid;
+%II
+omega = linspace(-128,128);
+T=0.25;
+w = 2*atan(omega*T/(2));
+figure (5);
+hold on
+plot (omega,w);
+T=2;
+w = 2*atan(omega*T/(2));
+plot (omega,w);
+T=16;
+w = 2*atan(omega*T/(2));
+plot (omega,w);
+legend('T1 = 0.25','T2 = 2','T3 = 16')
+ylabel('\omega(rad)')
+xlabel('\Omega(rad/s)')
+title('\omega x \Omega ');
+hold off
+
+figure(6);
+T = linspace(-128,128);
+w = 2*atan(T/2);
+plot(T,w);
+ylabel('\omega(rad)');
+xlabel('T(s)');
+title('\omega x T ');
+
+%III
+fc = 8000;
+fa = 40000;
+wc = 2*pi*fc/fa;
+N = 4;
+T = 1/fa;
+
+Fc2 = 2*fa*tan(wc /2);
+
+[b2 , a2] = butter(N, wc , 's');
+figure (7);
+zplane(b2 ,a2);
+grid;
+title("DPZ H(s)");
+
+[b3 , a3] = bilinear(b2 ,a2 ,1);
+[H, W] = freqz(b3 , a3 , 512);
+figure (8);
+semilogy(W,abs(H));
+grid;
+title("magnitude depois da TBL");
+
+figure (9);
+zplane(b3 ,a3);
+grid;
+title("DPZ depois da TBL");
+
+figure (10);
+impz(b3 ,a3 ,32);
+grid;
+title("Resposta ao impulso");
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Parte 2 do projeto : Filtros FIR
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%1
+%janelas
+beta=5;
+L=23;
+kiser=besseli(0,beta*sqrt(1-(((0:L-1)-(L-1)/2)/((L-1)/2)).^2))/besseli(0,beta);
+%hamming
+hamm=0.54 - 0.46*cos(2*pi*(0:L-1)/(L-1));
+%rect
+re = ones(L,1);
+%blackman
+
+
+N = L-1; 
+s = (-1)^(N);
+if s == -1
+   M=(N+1)/2;
+else
+   M=N/2;
+    
+end  
+A=M
+M=(N+1)/2;
+%M=int32(A)
+%black1 = zeros(L,1);
+black1 = 0.42-0.5*cos(2*pi*(0:M)/(N))+0.08*cos(4*pi*(0:M)/(N));
+black2=flip(black1(1:end-1));
+black=[ black1 black2 ]
+% triang
+
+
+tri=2*((1:(L+1)/2)/(L+1));
+tri2=2-2*((1+(L+1)/2:L))/(L+1);
+tria=[tri tri2];
+
+%
+
+%codigo
+
+
+
+b = cos(pi*(-11:11)).sinc(0.7(-11:11));
+ham =b.*hamm;
+figure (1);
+
+zerophase(ham);
+h=b.*kiser;
+figure (2);
+zerophase(h);
+rec=b.*re';
+figure (3);
+zerophase(rec);
+tr=b.*tria;
+figure (4);
+zerophase(tr);
+bl=b.*black;
+figure (5);
+zerophase(bl);
+figure(6);
+zerophase(ham);
+figure(7);
+impz(rec);
+figure(8);
+impz(bl);
+figure(9);
+impz(tr);
+figure(10);
+impz(ham);
+figure(11)
+zplane(ham);
+figure(12);
+zplane(rec);
+figure(13);
+zplane(tr);
+figure(14);
+zplane(bl);
+%blackman22=b.*blackman(23)';
+figure(15);
+%bl2 = fir1(21, 0.3,'high', blackman(N+1));
+zplane(bl2);
+
+h =  fir1(30, [0.1 0.3] , "bandpass", kaiser(31, 0));
+%h(16) = 0.26*pi;
+[H, f] = freqz(0.5*h, 1, 1024);
+beta=4;
+L=31;
+
+hid=[zeros(ceil(1024/10),1)' ones(ceil(0.2*1024),1)' zeros(floor(0.7*1024),1)']
+%kiser=besseli(0,beta*sqrt(1-(((0:L-1)-(L-1)/2)/((L-1)/2)).^2))/besseli(0,beta);
+hi=ones(L,1)
+h4 = fir1(30, [0.1 0.3] , "bandpass", kaiser(L, beta));
+beta=6
+%kiser=besseli(0,beta*sqrt(1-(((0:L-1)-(L-1)/2)/((L-1)/2)).^2))/besseli(0,beta);
+
+h6 = fir1(30, [0.1 0.3] , "bandpass", kaiser(L, beta));
+beta=9
+%kiser=besseli(0,beta*sqrt(1-(((0:L-1)-(L-1)/2)/((L-1)/2)).^2))/besseli(0,beta);
+h9 = fir1(30, [0.1 0.3] , "bandpass", kaiser(L, beta));
+[H6, f6] = freqz(h6, 1, 1024);
+[H4, f4] = freqz(h4, 1, 1024);
+[H9, f9] = freqz(h9, 1, 1024);
+plot(f/pi, abs(hid))
+figure(1);
+hold on
+plot(f4/pi, abs(H4));
+hold on
+plot(f6/pi,abs(H6));
+hold on
+plot(f9/pi, abs(H9));
+hold off
+legend('Filtro ideal','Filtro com beta=4','filtro com beta =6','Filtro com beta=9');
+figure(2);
+impz(h4);
+figure(3);
+impz(h6);
+figure(4);
+impz(h9);
+figure(5);
+zplane(h4);
+figure(6);
+zplane(h6);
+figure(7);
+zplane(h9);
+figure(8);
+
+plot(f4/pi,20*log(H4));
+hold on
+plot(f6/pi,20*log(H6));
+hold on
+plot(f9/pi,20*log(H9));
+hold off
+title("magnitude em db");
+legend('Filtro com beta=4','filtro com beta=6','Filtro com beta=9');
